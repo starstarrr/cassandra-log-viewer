@@ -1,0 +1,9 @@
+# Demo recording run, 2026-11-10 (frames in docs/demo.mp4)
+[2026-11-10T20:50:39Z] docker kill cass3
+INFO  [GossipStage:1] 2026-11-10T20:50:58,873 Gossiper.java:1508 - InetAddress /172.20.0.5:7000 is now DOWN
+INFO  [GossipStage:1] 2026-11-10T20:50:59,039 Gossiper.java:1508 - InetAddress /172.20.0.5:7000 is now DOWN
+[2026-11-10T20:51:25Z] docker start cass3
+INFO  [GossipStage:1] 2026-11-10T20:51:39,232 Gossiper.java:1492 - InetAddress /172.20.0.5:7000 is now UP
+INFO  [HintsDispatcher:1] 2026-11-10T20:51:55,736 HintsDispatchExecutor.java:300 - Finished hinted handoff of file cc7ef
+INFO  [GossipStage:1] 2026-11-10T20:51:39,319 Gossiper.java:1492 - InetAddress /172.20.0.5:7000 is now UP
+INFO  [HintsDispatcher:1] 2026-11-10T20:51:55,086 HintsDispatchExecutor.java:300 - Finished hinted handoff of file cc7ef

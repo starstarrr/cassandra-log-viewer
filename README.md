@@ -7,6 +7,12 @@ text. A script breaks the cluster on purpose (node crash, lost quorum,
 tombstones, schema changes) so there is something real to investigate. The
 investigations are written up in [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 
+![Demo: crash a node, find it in the logs, watch it recover](docs/demo.gif)
+
+40-second demo, also as [MP4](docs/demo.mp4). Every frame is from one real run
+on this cluster; the timings in the captions are in
+[`runs/11-demo-run.txt`](runs/11-demo-run.txt).
+
 ## Architecture
 
 ```
