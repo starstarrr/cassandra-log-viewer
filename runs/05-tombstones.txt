@@ -1,0 +1,13 @@
+[2026-11-10T19:27:40Z] insert 1500 rows into partition pk='p1', then delete each row
+[2026-11-10T19:27:47Z] read the partition (should scan 1500 tombstones, warn threshold is 1000)
+Consistency level set to ALL.
+
+ pk | ck | v
+----+----+---
+
+
+(0 rows)
+
+Warnings :
+Read 0 live rows and 1500 tombstone cells for query SELECT * FROM lab.tomb WHERE pk = 'p1' LIMIT 100 ALLOW FILTERING; token -9032840179063523349 (see tombstone_warn_threshold)
+

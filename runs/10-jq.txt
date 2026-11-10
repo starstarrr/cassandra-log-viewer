@@ -1,0 +1,15 @@
+$ curl -s "localhost:8000/api/logs?min_level=WARN&size=1000" | jq -r '.events | group_by(.logger) | map("\(length)	\(.[0].logger)") | .[]' | sort -rn
+6	NoSpamLogger
+5	StartupChecks
+5	ReadCommand
+5	NativeLibrary
+5	FailureDetector
+4	SelectStatement
+3	SystemKeyspace
+
+$ curl -s "localhost:8000/api/logs?q=%22hinted%20handoff%22&size=20" | jq -r '.events[] | [.["@timestamp"], .node, .message[:90]] | @tsv'
+2026-11-10T19:27:05.534+00:00	node1	Finished hinted handoff of file cc7efc43-fc43-4de2-8c83-76684585afc3-1794338754762-2.hints
+2026-11-10T19:27:05.463+00:00	node1	Finished hinted handoff of file 2a470abc-3646-4a4c-95da-2dc1ee0b25a1-1794338784772-2.hints
+
+$ curl -s "localhost:8000/api/summary?q=UnavailableException"
+{"total":1,"by_node":{"node1":1},"by_level":{"INFO":1}}

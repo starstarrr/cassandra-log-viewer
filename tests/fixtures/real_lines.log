@@ -1,0 +1,7 @@
+INFO  [main] 2026-11-10T19:20:29,147 YamlConfigurationLoader.java:103 - Configuration location: file:/etc/cassandra/cassandra.yaml
+INFO  [main] 2026-11-10T19:20:29,546 DatabaseDescriptor.java:1644 - Supported sstable formats are: big -> org.apache.cassandra.io.sstable.format.big.BigFormat with singleton components: [Data.db, Index.db, Statistics.db, CompressionInfo.db, Filter.db, Summary.db, Digest.crc32, CRC.db, TOC.txt], bti -> org.apache.cassandra.io.sstable.format.bti.BtiFormat with singleton components: [Data.db, Partitions.db, Rows.db, Statistics.db, CompressionInfo.db, Filter.db, Digest.crc32, CRC.db, TOC.txt]
+INFO  [GossipStage:1] 2026-11-10T19:21:39,284 Gossiper.java:1548 - Node /172.20.0.4:7000 is now part of the cluster
+INFO  [main] 2026-11-10T19:21:22,138 StorageService.java:3320 - Node /172.20.0.3:7000 state jump to NORMAL
+WARN  [GossipTasks:1] 2026-11-10T19:21:40,244 FailureDetector.java:347 - Not marking nodes down due to local pause of 67206958991ns > 5000000000ns
+WARN  [MigrationStage:1] 2026-11-10T19:21:40,368 NoSpamLogger.java:107 - Can't send schema pull request: node /172.20.0.3:7000 is down.
+DEBUG [main] 2026-11-10T19:20:29,150 YamlConfigurationLoader.java:123 - Loading settings from file:/etc/cassandra/cassandra.yaml

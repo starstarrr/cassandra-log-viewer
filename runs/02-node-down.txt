@@ -1,0 +1,76 @@
+[2026-11-10T19:25:18Z] 200 writes to lab.events at CONSISTENCY ONE via cass1
+[2026-11-10T19:25:19Z] done
+[2026-11-10T19:25:19Z] docker kill cass3
+INFO  [GossipStage:1] 2026-11-10T19:25:38,890 Gossiper.java:1508 - InetAddress /172.20.0.5:7000 is now DOWN
+INFO  [GossipStage:1] 2026-11-10T19:25:38,639 Gossiper.java:1508 - InetAddress /172.20.0.5:7000 is now DOWN
+UN  172.20.0.3  96.12 KiB   16      100.0%            2d0af686-c644-43b8-b3a3-153f6c7fee72  rack1
+UN  172.20.0.4  108.44 KiB  16      100.0%            2a470abc-3646-4a4c-95da-2dc1ee0b25a1  rack1
+DN  172.20.0.5  108.49 KiB  16      100.0%            cc7efc43-fc43-4de2-8c83-76684585afc3  rack1
+[2026-11-10T19:25:40Z] SELECT at CONSISTENCY QUORUM via cass1 (needs 2 of 3 replicas)
+Consistency level set to QUORUM.
+TRACING set to ON
+
+ count
+-------
+     3
+
+(1 rows)
+
+Warnings :
+Aggregation query used on multiple partition keys (IN restriction)
+
+
+Tracing session: 83fdca60-dd3c-11f1-82c3-110b299b6f85
+
+ activity                                                                                          | timestamp                  | source     | source_elapsed | client
+---------------------------------------------------------------------------------------------------+----------------------------+------------+----------------+-----------
+                                                                                Execute CQL3 query | 2026-11-10 19:25:40.748000 | 172.20.0.3 |              0 | 127.0.0.1
+        Parsing SELECT count(*) FROM lab.events WHERE id IN (1,2,3); [Native-Transport-Requests-4] | 2026-11-10 19:25:40.757000 | 172.20.0.3 |           9747 | 127.0.0.1
+                                                 Preparing statement [Native-Transport-Requests-4] | 2026-11-10 19:25:40.767000 | 172.20.0.3 |          19734 | 127.0.0.1
+                                  reading data from /172.20.0.4:7000 [Native-Transport-Requests-4] | 2026-11-10 19:25:40.805000 | 172.20.0.3 |          58026 | 127.0.0.1
+                                          Executing single-partition query on events [ReadStage-1] | 2026-11-10 19:25:40.806000 | 172.20.0.3 |          58662 | 127.0.0.1
+                                                        Acquiring sstable references [ReadStage-1] | 2026-11-10 19:25:40.806001 | 172.20.0.3 |          58766 | 127.0.0.1
+                                                           Merging memtable contents [ReadStage-1] | 2026-11-10 19:25:40.806002 | 172.20.0.3 |          58825 | 127.0.0.1
+      Sending READ_REQ message to /172.20.0.4:7000 message size 80 bytes [Messaging-EventLoop-3-2] | 2026-11-10 19:25:40.807000 | 172.20.0.3 |          60099 | 127.0.0.1
+                                              Read 1 live rows and 0 tombstone cells [ReadStage-1] | 2026-11-10 19:25:40.808000 | 172.20.0.3 |          60610 | 127.0.0.1
+                         READ_REQ message received from /172.20.0.3:7000 [Messaging-EventLoop-3-1] | 2026-11-10 19:25:40.816000 | 172.20.0.4 |            548 | 127.0.0.1
+                                          Executing single-partition query on events [ReadStage-1] | 2026-11-10 19:25:40.826000 | 172.20.0.4 |          12250 | 127.0.0.1
+                                                        Acquiring sstable references [ReadStage-1] | 2026-11-10 19:25:40.826001 | 172.20.0.4 |          12529 | 127.0.0.1
+                                                           Merging memtable contents [ReadStage-1] | 2026-11-10 19:25:40.827000 | 172.20.0.4 |          12751 | 127.0.0.1
+                                              Read 1 live rows and 0 tombstone cells [ReadStage-1] | 2026-11-10 19:25:40.836000 | 172.20.0.4 |          17442 | 127.0.0.1
+                                              Enqueuing response to /172.20.0.3:7000 [ReadStage-1] | 2026-11-10 19:25:40.837000 | 172.20.0.4 |          22668 | 127.0.0.1
+ Sending READ_RSP message to cass1/172.20.0.3:7000 message size 68 bytes [Messaging-EventLoop-3-1] | 2026-11-10 19:25:40.837001 | 172.20.0.4 |          23240 | 127.0.0.1
+                         READ_RSP message received from /172.20.0.4:7000 [Messaging-EventLoop-3-1] | 2026-11-10 19:25:40.839000 | 172.20.0.3 |          91330 | 127.0.0.1
+                                Processing response from /172.20.0.4:7000 [RequestResponseStage-1] | 2026-11-10 19:25:40.840000 | 172.20.0.3 |          92965 | 127.0.0.1
+                                  reading data from /172.20.0.4:7000 [Native-Transport-Requests-4] | 2026-11-10 19:25:40.846000 | 172.20.0.3 |          98675 | 127.0.0.1
+      Sending READ_REQ message to /172.20.0.4:7000 message size 80 bytes [Messaging-EventLoop-3-2] | 2026-11-10 19:25:40.846001 | 172.20.0.3 |          98937 | 127.0.0.1
+                                          Executing single-partition query on events [ReadStage-1] | 2026-11-10 19:25:40.846002 | 172.20.0.3 |          99046 | 127.0.0.1
+                                                        Acquiring sstable references [ReadStage-1] | 2026-11-10 19:25:40.846003 | 172.20.0.3 |          99247 | 127.0.0.1
+                                                           Merging memtable contents [ReadStage-1] | 2026-11-10 19:25:40.847000 | 172.20.0.3 |          99700 | 127.0.0.1
+                         READ_REQ message received from /172.20.0.3:7000 [Messaging-EventLoop-3-1] | 2026-11-10 19:25:40.847000 | 172.20.0.4 |             16 | 127.0.0.1
+                                              Read 1 live rows and 0 tombstone cells [ReadStage-1] | 2026-11-10 19:25:40.848000 | 172.20.0.3 |         100491 | 127.0.0.1
+                                          Executing single-partition query on events [ReadStage-2] | 2026-11-10 19:25:40.848000 | 172.20.0.4 |           1368 | 127.0.0.1
+                                                        Acquiring sstable references [ReadStage-2] | 2026-11-10 19:25:40.848001 | 172.20.0.4 |           1550 | 127.0.0.1
+                                                           Merging memtable contents [ReadStage-2] | 2026-11-10 19:25:40.848002 | 172.20.0.4 |           1659 | 127.0.0.1
+                                              Read 1 live rows and 0 tombstone cells [ReadStage-2] | 2026-11-10 19:25:40.848003 | 172.20.0.4 |           1957 | 127.0.0.1
+                                              Enqueuing response to /172.20.0.3:7000 [ReadStage-2] | 2026-11-10 19:25:40.849000 | 172.20.0.4 |           1997 | 127.0.0.1
+ Sending READ_RSP message to cass1/172.20.0.3:7000 message size 68 bytes [Messaging-EventLoop-3-1] | 2026-11-10 19:25:40.851000 | 172.20.0.4 |           4421 | 127.0.0.1
+                         READ_RSP message received from /172.20.0.4:7000 [Messaging-EventLoop-3-1] | 2026-11-10 19:25:40.852000 | 172.20.0.3 |         104435 | 127.0.0.1
+                                Processing response from /172.20.0.4:7000 [RequestResponseStage-2] | 2026-11-10 19:25:40.852001 | 172.20.0.3 |         104913 | 127.0.0.1
+                                  reading data from /172.20.0.4:7000 [Native-Transport-Requests-4] | 2026-11-10 19:25:40.855000 | 172.20.0.3 |         107292 | 127.0.0.1
+                         READ_REQ message received from /172.20.0.3:7000 [Messaging-EventLoop-3-1] | 2026-11-10 19:25:40.855000 | 172.20.0.4 |             16 | 127.0.0.1
+      Sending READ_REQ message to /172.20.0.4:7000 message size 80 bytes [Messaging-EventLoop-3-2] | 2026-11-10 19:25:40.855001 | 172.20.0.3 |         107408 | 127.0.0.1
+                                          Executing single-partition query on events [ReadStage-3] | 2026-11-10 19:25:40.855001 | 172.20.0.4 |            231 | 127.0.0.1
+                                          Executing single-partition query on events [ReadStage-1] | 2026-11-10 19:25:40.855002 | 172.20.0.3 |         107433 | 127.0.0.1
+                                                        Acquiring sstable references [ReadStage-3] | 2026-11-10 19:25:40.855002 | 172.20.0.4 |            287 | 127.0.0.1
+                                                        Acquiring sstable references [ReadStage-1] | 2026-11-10 19:25:40.855003 | 172.20.0.3 |         107486 | 127.0.0.1
+                                                           Merging memtable contents [ReadStage-3] | 2026-11-10 19:25:40.855003 | 172.20.0.4 |            372 | 127.0.0.1
+                                                           Merging memtable contents [ReadStage-1] | 2026-11-10 19:25:40.855004 | 172.20.0.3 |         107529 | 127.0.0.1
+                                              Read 1 live rows and 0 tombstone cells [ReadStage-1] | 2026-11-10 19:25:40.855005 | 172.20.0.3 |         107809 | 127.0.0.1
+                         READ_RSP message received from /172.20.0.4:7000 [Messaging-EventLoop-3-1] | 2026-11-10 19:25:40.856000 | 172.20.0.3 |         108886 | 127.0.0.1
+                                              Read 1 live rows and 0 tombstone cells [ReadStage-3] | 2026-11-10 19:25:40.856000 | 172.20.0.4 |            612 | 127.0.0.1
+                                              Enqueuing response to /172.20.0.3:7000 [ReadStage-3] | 2026-11-10 19:25:40.856001 | 172.20.0.4 |            652 | 127.0.0.1
+ Sending READ_RSP message to cass1/172.20.0.3:7000 message size 68 bytes [Messaging-EventLoop-3-1] | 2026-11-10 19:25:40.856002 | 172.20.0.4 |            807 | 127.0.0.1
+                                Processing response from /172.20.0.4:7000 [RequestResponseStage-2] | 2026-11-10 19:25:40.857000 | 172.20.0.3 |         110102 | 127.0.0.1
+                                                                                  Request complete | 2026-11-10 19:25:40.860252 | 172.20.0.3 |         112252 | 127.0.0.1
+

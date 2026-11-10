@@ -1,0 +1,101 @@
+# Local lab: 3-node Apache Cassandra cluster + single-node OpenSearch.
+# Sized for a laptop: give the Docker VM about 6 GB RAM (see README).
+#
+#   docker compose up -d                       # Cassandra + OpenSearch
+#   docker compose --profile dashboards up -d  # also OpenSearch Dashboards
+#
+# Each node writes its logs to ./logs/nodeN on the host, so the collector
+# (and grep/jq) can read them directly.
+
+x-cassandra: &cassandra
+  image: cassandra:5.0.9
+  restart: "no"
+  mem_limit: 1g
+  environment: &cassandra-env
+    CASSANDRA_CLUSTER_NAME: logviewer-lab
+    CASSANDRA_DC: dc1
+    CASSANDRA_RACK: rack1
+    CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+    CASSANDRA_NUM_TOKENS: "16"
+    CASSANDRA_SEEDS: cass1
+    MAX_HEAP_SIZE: 512M
+    HEAP_NEWSIZE: 128M
+  healthcheck:
+    # cqlsh only answers once the node has joined and is serving CQL.
+    test: ["CMD-SHELL", "cqlsh -e 'SELECT release_version FROM system.local' >/dev/null 2>&1"]
+    interval: 15s
+    timeout: 10s
+    retries: 20
+    start_period: 60s
+
+services:
+  cass1:
+    <<: *cassandra
+    container_name: cass1
+    hostname: cass1
+    volumes:
+      - ./logs/node1:/var/log/cassandra
+      - cass1-data:/var/lib/cassandra
+
+  cass2:
+    <<: *cassandra
+    container_name: cass2
+    hostname: cass2
+    volumes:
+      - ./logs/node2:/var/log/cassandra
+      - cass2-data:/var/lib/cassandra
+    depends_on:
+      cass1:
+        condition: service_healthy
+
+  cass3:
+    <<: *cassandra
+    container_name: cass3
+    hostname: cass3
+    volumes:
+      - ./logs/node3:/var/log/cassandra
+      - cass3-data:/var/lib/cassandra
+    depends_on:
+      cass2:
+        condition: service_healthy
+
+  opensearch:
+    image: opensearchproject/opensearch:2.19.1
+    container_name: opensearch
+    mem_limit: 1g
+    environment:
+      discovery.type: single-node
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+      # Lab only: no TLS/auth. Ports are bound to 127.0.0.1 so nothing
+      # outside this laptop can reach it.
+      DISABLE_SECURITY_PLUGIN: "true"
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+    ports:
+      - "127.0.0.1:9200:9200"
+    volumes:
+      - os-data:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200/_cluster/health >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:2.19.1
+    container_name: dashboards
+    profiles: ["dashboards"]
+    mem_limit: 768m
+    environment:
+      OPENSEARCH_HOSTS: '["http://opensearch:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
+    ports:
+      - "127.0.0.1:5601:5601"
+    depends_on:
+      opensearch:
+        condition: service_healthy
+
+volumes:
+  cass1-data:
+  cass2-data:
+  cass3-data:
+  os-data:

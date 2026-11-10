@@ -1,0 +1,20 @@
+[project]
+name = "cassandra-log-viewer"
+version = "0.1.0"
+description = "Collect logs from a 3-node Cassandra cluster into OpenSearch and filter them with a small FastAPI app"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "httpx>=0.27",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

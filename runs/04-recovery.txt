@@ -1,0 +1,28 @@
+[2026-11-10T19:26:42Z] docker start cass2
+[2026-11-10T19:26:42Z] docker start cass3
+--- after 27s
+INFO  [GossipStage:1] 2026-11-10T19:26:51,177 Gossiper.java:1492 - InetAddress /172.20.0.5:7000 is now UP
+INFO  [GossipStage:1] 2026-11-10T19:26:51,490 Gossiper.java:1492 - InetAddress /172.20.0.4:7000 is now UP
+INFO  [HintsDispatcher:1] 2026-11-10T19:27:05,456 HintsStore.java:232 - Deleted hint file 2a470abc-3646-4a4c-95da-2dc1ee0b25a1-1794338784772-2.hints
+INFO  [HintsDispatcher:1] 2026-11-10T19:27:05,463 HintsDispatchExecutor.java:300 - Finished hinted handoff of file 2a470abc-3646-4a4c-95da-2dc1ee0b25a1-1794338784772-2.hints to endpoint /172.20.0.4:70
+INFO  [HintsDispatcher:2] 2026-11-10T19:27:05,533 HintsStore.java:232 - Deleted hint file cc7efc43-fc43-4de2-8c83-76684585afc3-1794338754762-2.hints
+INFO  [HintsDispatcher:2] 2026-11-10T19:27:05,534 HintsDispatchExecutor.java:300 - Finished hinted handoff of file cc7efc43-fc43-4de2-8c83-76684585afc3-1794338754762-2.hints to endpoint /172.20.0.5:70
+cass1: 		Number of partitions (estimate): 299 		Local write count: 500 
+cass2: 		Number of partitions (estimate): 300 		Local write count: 500 
+cass3: 		Number of partitions (estimate): 500 		Local write count: 500 
+ count
+-------
+   300
+
+ count
+   300
+                                                      Parsing SELECT count(*) FROM lab.events; [Native-Transport-Requests-7] | 2026-11-10 19:27:33.683000 | 172.20.0.5 |           7573 | 127.0.0.1
+ Submitting range requests on 49 ranges with a concurrency of 14 (7.2 rows per range expected) [Native-Transport-Requests-7] | 2026-11-10 19:27:33.693000 | 172.20.0.5 |          18084 | 127.0.0.1
+                                                                      Read 100 live rows and 0 tombstone cells [ReadStage-1] | 2026-11-10 19:27:33.722000 | 172.20.0.5 |          46643 | 127.0.0.1
+ Submitting range requests on 32 ranges with a concurrency of 14 (7.2 rows per range expected) [Native-Transport-Requests-7] | 2026-11-10 19:27:33.739000 | 172.20.0.5 |          63526 | 127.0.0.1
+                                                                      Read 100 live rows and 0 tombstone cells [ReadStage-1] | 2026-11-10 19:27:33.763000 | 172.20.0.5 |          87575 | 127.0.0.1
+ Submitting range requests on 19 ranges with a concurrency of 14 (7.2 rows per range expected) [Native-Transport-Requests-7] | 2026-11-10 19:27:33.769001 | 172.20.0.5 |          94523 | 127.0.0.1
+                                                                      Read 100 live rows and 0 tombstone cells [ReadStage-1] | 2026-11-10 19:27:33.777000 | 172.20.0.5 |         102203 | 127.0.0.1
+   Submitting range requests on 1 ranges with a concurrency of 1 (7.2 rows per range expected) [Native-Transport-Requests-7] | 2026-11-10 19:27:33.778001 | 172.20.0.5 |         103471 | 127.0.0.1
+                                                                        Read 0 live rows and 0 tombstone cells [ReadStage-2] | 2026-11-10 19:27:33.779002 | 172.20.0.5 |         103923 | 127.0.0.1
+                                                                                                            Request complete | 2026-11-10 19:27:33.780286 | 172.20.0.5 |         104286 | 127.0.0.1

@@ -1,0 +1,31 @@
+{
+  "index_patterns": ["cassandra-logs-*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "refresh_interval": "2s"
+    },
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        "@timestamp":   { "type": "date" },
+        "level":        { "type": "keyword" },
+        "node":         { "type": "keyword" },
+        "thread":       { "type": "keyword" },
+        "thread_pool":  { "type": "keyword" },
+        "logger":       { "type": "keyword" },
+        "source_file":  { "type": "keyword" },
+        "source_line":  { "type": "integer" },
+        "message": {
+          "type": "text",
+          "fields": { "raw": { "type": "keyword", "ignore_above": 1024 } }
+        },
+        "exception":    { "type": "keyword", "ignore_above": 1024 },
+        "stack_trace":  { "type": "text" },
+        "log_file":     { "type": "keyword" },
+        "offset":       { "type": "long" }
+      }
+    }
+  }
+}

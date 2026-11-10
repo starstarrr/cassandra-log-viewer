@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cassandra log viewer</title>
+<style>
+  :root { --bg:#fafafa; --fg:#1d1d1f; --muted:#6b6b70; --line:#e2e2e6; --warn:#a15c00; --err:#b3261e; --card:#fff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#16161a; --fg:#e8e8ec; --muted:#9a9aa3; --line:#2c2c33; --warn:#f0a840; --err:#ff7a70; --card:#1e1e24; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.45 system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  header { padding:12px 16px; border-bottom:1px solid var(--line); display:flex; gap:12px; align-items:baseline; flex-wrap:wrap; }
+  h1 { font-size:16px; margin:0; }
+  #health { color:var(--muted); font-size:12px; }
+  form { display:flex; flex-wrap:wrap; gap:8px; padding:12px 16px; align-items:end; }
+  label { display:flex; flex-direction:column; font-size:12px; color:var(--muted); gap:2px; }
+  input, select, button { font:inherit; padding:5px 8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); }
+  input[name=q] { width:260px; }
+  button { cursor:pointer; }
+  #summary { padding:0 16px 8px; color:var(--muted); font-size:12px; }
+  .wrap { overflow-x:auto; padding:0 16px 24px; }
+  table { border-collapse:collapse; width:100%; background:var(--card); }
+  th, td { text-align:left; padding:4px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-size:12px; color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--card); }
+  td.t { white-space:nowrap; font-variant-numeric:tabular-nums; }
+  td.m { font-family:ui-monospace, Menlo, monospace; font-size:12px; word-break:break-word; }
+  tr.WARN td.l { color:var(--warn); font-weight:600; }
+  tr.ERROR td.l { color:var(--err); font-weight:600; }
+  details pre { white-space:pre-wrap; margin:4px 0 0; color:var(--muted); }
+</style>
+</head>
+<body>
+<header><h1>Cassandra log viewer</h1><span id="health"></span></header>
+<form id="f">
+  <label>Node<select name="node"><option value="">all</option><option>node1</option><option>node2</option><option>node3</option></select></label>
+  <label>Min level<select name="min_level"><option value="">any</option><option>DEBUG</option><option selected>INFO</option><option>WARN</option><option>ERROR</option></select></label>
+  <label>Since (UTC)<input type="datetime-local" name="since" step="1"></label>
+  <label>Until (UTC)<input type="datetime-local" name="until" step="1"></label>
+  <label>Logger<input name="logger" placeholder="Gossiper"></label>
+  <label>Text<input name="q" placeholder='tombstone  or  "is now DOWN"'></label>
+  <label>Rows<select name="size"><option>50</option><option selected>100</option><option>500</option></select></label>
+  <button>Search</button>
+</form>
+<div id="summary"></div>
+<div class="wrap"><table>
+  <thead><tr><th>Time (UTC)</th><th>Node</th><th>Level</th><th>Logger</th><th>Thread</th><th>Message</th></tr></thead>
+  <tbody id="rows"></tbody>
+</table></div>
+<script>
+const f = document.getElementById('f');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function params() {
+  const p = new URLSearchParams();
+  for (const [k, v] of new FormData(f)) {
+    if (!v) continue;
+    p.set(k, (k === 'since' || k === 'until') ? v + 'Z' : v);  // inputs are treated as UTC
+  }
+  return p;
+}
+
+async function load() {
+  const p = params();
+  history.replaceState(null, '', '?' + p);
+  const [logs, sum] = await Promise.all([
+    fetch('/api/logs?' + p).then(r => r.json()),
+    fetch('/api/summary?' + p).then(r => r.json()),
+  ]);
+  if (logs.detail) { document.getElementById('summary').textContent = 'Error: ' + JSON.stringify(logs.detail); return; }
+  const part = o => Object.entries(o).map(([k, v]) => `${k} ${v}`).join(' · ');
+  document.getElementById('summary').textContent =
+    `${logs.total} matches in ${logs.took_ms} ms — by node: ${part(sum.by_node)} — by level: ${part(sum.by_level)}`;
+  document.getElementById('rows').innerHTML = logs.events.map(e => `
+    <tr class="${esc(e.level)}">
+      <td class="t">${esc(e['@timestamp'].replace('T', ' ').replace('+00:00', ''))}</td>
+      <td>${esc(e.node)}</td><td class="l">${esc(e.level)}</td>
+      <td>${esc(e.logger)}</td><td>${esc(e.thread)}</td>
+      <td class="m">${esc(e.message)}${e.stack_trace ? `<details><summary>${esc(e.exception)}</summary><pre>${esc(e.stack_trace)}</pre></details>` : ''}</td>
+    </tr>`).join('');
+}
+
+// Restore filters from the URL so a search can be shared as a link.
+for (const [k, v] of new URLSearchParams(location.search)) {
+  if (f.elements[k]) f.elements[k].value = (k === 'since' || k === 'until') ? v.replace(/Z$/, '') : v;
+}
+f.addEventListener('submit', e => { e.preventDefault(); load(); });
+fetch('/api/health').then(r => r.json()).then(h => {
+  document.getElementById('health').textContent = `OpenSearch: ${h.status ?? 'unreachable'}`;
+});
+load();
+</script>
+</body>
+</html>

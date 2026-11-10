@@ -1,0 +1,14 @@
+[2026-11-10T19:25:48Z] 300 writes to lab.events at CONSISTENCY ONE via cass1
+[2026-11-10T19:25:49Z] done
+$ nodetool listpendinghints (cass1)
+This node does not have any pending hints
+total 32
+drwxr-xr-x 2 cassandra cassandra  4096 Nov 10 19:25 .
+drwxrwxrwt 6 cassandra cassandra  4096 Nov 10 19:20 ..
+-rw-r--r-- 1 cassandra cassandra 22734 Nov 10 19:25 cc7efc43-fc43-4de2-8c83-76684585afc3-1794338754762-2.hints
+[2026-11-10T19:26:02Z] docker kill cass2
+INFO  [GossipStage:1] 2026-11-10T19:26:21,012 Gossiper.java:1508 - InetAddress /172.20.0.4:7000 is now DOWN
+[2026-11-10T19:26:21Z] SELECT at CONSISTENCY QUORUM via cass1 (needs 2 of 3 replicas)
+<stdin>:1:NoHostAvailable: ('Unable to complete the operation against any hosts', {<Host: 127.0.0.1:9042 dc1>: Unavailable('Error from server: code=1000 [Unavailable exception] message="Cannot achieve consistency level QUORUM" info={\'consistency\': \'QUORUM\', \'required_replicas\': 2, \'alive_replicas\': 1}')})
+Consistency level set to QUORUM.
+TRACING set to ON

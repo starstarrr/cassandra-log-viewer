@@ -1,0 +1,5 @@
+[2026-11-10T19:28:17Z] write 100500 row tombstones into partition pk='p2' (batches of 500)
+[2026-11-10T19:36:24Z] read the partition (expect TombstoneOverwhelmingException)
+Consistency level set to ONE.
+<stdin>:1:ReadFailure: Error from server: code=1300 [Replica(s) failed to execute read] message="Operation failed - received 0 responses and 2 failures: READ_TOO_MANY_TOMBSTONES from /172.20.0.4:7000, READ_TOO_MANY_TOMBSTONES from /172.20.0.5:7000" info={'consistency': 'ONE', 'required_responses': 1, 'received_responses': 0, 'failures': 2, 'error_code_map': {'172.20.0.4': '0x0001', '172.20.0.5': '0x0001'}}
+scripts/trouble.sh overwhelm  0.48s user 0.35s system 0% cpu 8:07.85 total

@@ -1,0 +1,8 @@
+logs/*/*
+!logs/*/.gitkeep
+.collector-state.json
+.collector-state.tmp
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc

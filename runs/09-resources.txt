@@ -1,0 +1,7 @@
+cass3 792.5MiB / 1GiB
+cass2 801.2MiB / 1GiB
+cass1 819.4MiB / 1GiB
+opensearch 953.5MiB / 1GiB
+cassandra-logs-2026.11.10 6340 4.5mb
+120K	logs/node1/system.log 208K	logs/node2/system.log 208K	logs/node3/system.log 508K	logs/node1/debug.log 620K	logs/node2/debug.log 664K	logs/node3/debug.log 
+19 passed, 1 warning in 0.24s

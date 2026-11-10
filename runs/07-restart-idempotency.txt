@@ -1,0 +1,13 @@
+## raw files (same parser; debug.log counted for DEBUG/TRACE only)
+node1 system.log 462 debug.log(DEBUG) 1128
+node2 system.log 821 debug.log(DEBUG) 1505
+node3 system.log 820 debug.log(DEBUG) 1604
+expected 6340
+index count: 6339
+## restart with saved offsets (--once)
+2026-11-10 12:37:41,989 INFO indexed 1 events (total 1)
+2026-11-10 12:37:43,997 INFO stopped, 1 events indexed this run
+index count: 6340
+## delete offset file, re-read everything from byte 0 (--once)
+2026-11-10 12:37:47,845 INFO stopped, 6340 events indexed this run
+index count: 6340
